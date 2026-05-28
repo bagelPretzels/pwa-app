@@ -1,3 +1,8 @@
+//工夫点
+//空白のパターンを四つか五つかの二パターンに固定した。
+//もとからある数字を置き換えることができてしまっていたためクリックしたら警告が出るようにした
+//新しく入力した数字には色がつくようにしてもとからある数字と見分けがつくようにした
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
  
@@ -7,8 +12,9 @@ canvas.height = 360;
 const size = 3;
 const cell = canvas.width / size;
  
-let i = 99;
+i = 0;
 let grid;
+let hintGrid; 
 
 //ＡＩで聞いた数字が完全に埋まった正しい魔方陣（全8パターン）
 const ALL_ANSWERS = [
@@ -22,15 +28,19 @@ const ALL_ANSWERS = [
   [[2, 7, 6], [9, 5, 1], [4, 3, 8]]
 ];
 
-//空白が四つか五つの場合のみ生成されるようにした
+//空白が二つ以上数字が四つ以上の場合のみ生成されるようにした
 while(i<4||i>5){
     //8通りのうちどれかが選択される
     let answer = ALL_ANSWERS[Math.floor(Math.random() * ALL_ANSWERS.length)];
 
     grid = answer.map(row => [...row]);
+    //もとからある数字はクリックできないように記録しておく
+    grid = structuredClone(answer);
+
+
+    i = 0;
     //50%の確率でnullか数字が入る。
     
-    i = 0;
 
     for (let y = 0; y < 3; y++) {  
 
@@ -45,7 +55,7 @@ while(i<4||i>5){
         }
     }
 }
-
+hintGrid = structuredClone(grid);
 
 
 
@@ -85,7 +95,11 @@ function draw() {
     for (let x = 0; x < size; x++) {
       const val = grid[y][x];
       if (val !== null) {
-        ctx.fillStyle = "#fff";
+        if (hintGrid[y][x] !== null) {
+          ctx.fillStyle = "#fff"; // もとからある数字（赤）
+        } else {
+          ctx.fillStyle = "#f33"; // プレイヤーが入力した数字（白）
+        }
         ctx.fillText(val, x * cell + cell / 2, y * cell + cell / 2);
       }
     }
@@ -143,6 +157,11 @@ canvas.addEventListener("click", (e) => {
   const x = Math.floor((e.clientX - rect.left) / cell);
   const y = Math.floor((e.clientY - rect.top) / cell);
  
+    if (hintGrid[y][x] !== null) {
+    alert("もともと存在する数字です");
+    return;
+  }
+
   const num = prompt("数字を入力 (1〜9)");
   const n = Number(num);
  
