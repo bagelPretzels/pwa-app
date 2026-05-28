@@ -7,7 +7,7 @@ canvas.height = 360;
 const size = 3;
 const cell = canvas.width / size;
  
-i = 0;
+i = 99;
 let grid;
 
 //ＡＩで聞いた数字が完全に埋まった正しい魔方陣（全8パターン）
