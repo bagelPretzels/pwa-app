@@ -22,7 +22,7 @@ const ALL_ANSWERS = [
   [[2, 7, 6], [9, 5, 1], [4, 3, 8]]
 ];
 
-//空白が二つ以上数字が四つ以上の場合のみ生成されるようにした
+//空白が四つか五つの場合のみ生成されるようにした
 while(i<4||i>5){
     //8通りのうちどれかが選択される
     let answer = ALL_ANSWERS[Math.floor(Math.random() * ALL_ANSWERS.length)];
