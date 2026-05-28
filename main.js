@@ -7,8 +7,10 @@ canvas.height = 360;
 const size = 3;
 const cell = canvas.width / size;
  
-// ★ 正しい魔法陣の一部を初期値にする（これなら必ず完成できる）
-// 1. 数字が完全に埋まった正しい魔方陣（全8パターン）
+i = 0;
+let grid;
+
+//ＡＩで聞いた数字が完全に埋まった正しい魔方陣（全8パターン）
 const ALL_ANSWERS = [
   [[8, 1, 6], [3, 5, 7], [4, 9, 2]],
   [[6, 1, 8], [7, 5, 3], [2, 9, 4]],
@@ -20,13 +22,33 @@ const ALL_ANSWERS = [
   [[2, 7, 6], [9, 5, 1], [4, 3, 8]]
 ];
 
-// 2. 完全にランダムに1つの正解配列を選ぶ
-let grid = ALL_ANSWERS[Math.floor(Math.random() * ALL_ANSWERS.length)];
+//空白が二つ以上数字が四つ以上の場合のみ生成されるようにした
+while(i<2||i>5){
+    //8通りのうちどれかが選択される
+    let answer = ALL_ANSWERS[Math.floor(Math.random() * ALL_ANSWERS.length)];
 
-// 3. 各マスを50%の確率で null にして問題にする
-grid = grid.map(row => 
-  row.map(num => (Math.random() < 0.5 ? null : num))
-);
+    grid = answer.map(row => [...row]);
+    //50%の確率でnullか数字が入る。
+    
+    i = 0;
+
+    for (let y = 0; y < 3; y++) {  
+
+        for (let x = 0; x < 3; x++) {    
+
+            if (Math.random() < 0.5) {   
+
+            grid[y][x] = null;  
+            i++
+            }
+
+        }
+    }
+}
+
+
+
+
 
 console.log(grid);
 
